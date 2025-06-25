@@ -22,8 +22,7 @@
     .state-dropdown,
     .state-dropdown-v2,
     .state-text,
-    .state-text-v2
-      {
+    .state-text-v2 {
       display: none;
     }
   </style>
@@ -63,6 +62,18 @@
         <br />
         <!---------template Header Ends Here---------->
         <!---------template Container Starts Here---------->
+        <div class="zf-tempFrmWrapper  zf-small " style="display: none;"><label class="zf-labelName">
+            Agent Id
+          </label>
+          <div class="zf-tempContDiv">
+            <span>
+              <input type="text" name="SingleLine9" checktype="c1" value="" maxlength="255" fieldType=1
+                placeholder="" /> </span>
+            <p id="SingleLine9_error" class="zf-errorMessage" style="display: none;">Invalid value
+            </p>
+          </div>
+          <div class="zf-clearBoth"></div>
+        </div>
         <div class="zf-subContWrap zf-topAlign">
           <ul>
             <fieldset>
@@ -81,14 +92,16 @@
                         <label class="zf-labelName">First Name
                           <em class="zf-important">*</em>
                         </label>
-                        <input type="text" maxlength="255" name="Name_First" fieldType="7" placeholder="" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')"/>
+                        <input type="text" maxlength="255" name="Name_First" fieldType="7" placeholder=""
+                          oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')" />
                       </div>
 
                       <div class="col2">
                         <label class="zf-labelName">Last Name
                           <em class="zf-important">*</em>
                         </label>
-                        <input type="text" maxlength="255" name="Name_Last" fieldType="7" placeholder="" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')"/>
+                        <input type="text" maxlength="255" name="Name_Last" fieldType="7" placeholder=""
+                          oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')" />
                       </div>
                     </div>
 
@@ -111,9 +124,9 @@
                   <span>
                     <input fieldType="9" type="text" maxlength="255" name="Email" checktype="c5" value="" placeholder=""
                       id="Email" /></span>
-                      <p id="Email_error" class="zf-errorMessage" style="display:none;">Please complete
-                        this required field.
-                      </p>
+                  <p id="Email_error" class="zf-errorMessage" style="display:none;">Please complete
+                    this required field.
+                  </p>
                 </div>
                 <div class="zf-clearBoth"></div>
               </li>
@@ -132,7 +145,7 @@
                           <input type="text" compname="PhoneNumber1" name="PhoneNumber1_countrycode" maxlength="20"
                             checktype="c7" value="" phoneFormat="1" isCountryCodeEnabled="false" fieldType="11"
                             id="international_PhoneNumber_countrycode" valType="number" phoneFormatType="1"
-                            placeholder="" oninput="this.value = this.value.replace(/[^0-9+]/g, '')"/>
+                            placeholder="" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" />
                         </span>
                         <div class="zf-clearBoth"></div>
                       </div>
@@ -157,7 +170,7 @@
                           <input type="text" compname="PhoneNumber" name="PhoneNumber_countrycode" maxlength="20"
                             checktype="c7" value="" phoneFormat="1" isCountryCodeEnabled="false" fieldType="11"
                             id="international_PhoneNumber1_countrycode" valType="number" phoneFormatType="1"
-                            placeholder="" oninput="this.value = this.value.replace(/[^0-9+]/g, '')"/>
+                            placeholder="" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" />
                         </span>
                         <div class="zf-clearBoth"></div>
                       </div>
@@ -274,7 +287,9 @@
                   <div>
                     All Hookah for Business accounts are subject to approval.
                     By submitting this application, I acknowledge that I have
-                    read and agree to the <a href="https://business.hookah.com/content/terms-and-conditions" target="_blank">Terms and Conditions</a> and <a href="https://business.hookah.com/content/privacy-policy-business" target="_blank">Privacy
+                    read and agree to the <a href="https://business.hookah.com/content/terms-and-conditions"
+                      target="_blank">Terms and Conditions</a> and <a
+                      href="https://business.hookah.com/content/privacy-policy-business" target="_blank">Privacy
                       Policy</a> <br /></div>
                 </label>
                 <div class="zf-clearBoth"></div>
@@ -427,7 +442,8 @@
               <!---------Decision Starts Here---------->
               <li class="zf-tempFrmWrapper zf-decesion">
                 <div class="zf-tempContDiv">
-                  <input type="checkbox" checktype="c1" checked="true" id="DecisionBox3" name="DecisionBox3" class="same" />
+                  <input type="checkbox" checktype="c1" checked="true" id="DecisionBox3" name="DecisionBox3"
+                    class="same" />
                   <label for="DecisionBox3" class="zf-labelName">Same as shipping
                   </label>
                   <p id="DecisionBox3_error" class="zf-errorMessage" style="display: none">
@@ -696,13 +712,13 @@
                           <label class="zf-labelName">
                             State &#x2f; Region &#x2f; Province
                             <em class="zf-important" id="required_addressType">*</em></label>
-                            <select class="state-dropdown-v2" checktype="c1" placeholder="">
-                              <option value="" selected="selected">Select State</option>
-                            </select>
-                            <input type="text" class="state-text-v2" checktype="c1" name="Address1_Region" placeholder=""
-                              autocomplete="off" id="Region">
+                          <select class="state-dropdown-v2" checktype="c1" placeholder="">
+                            <option value="" selected="selected">Select State</option>
+                          </select>
+                          <input type="text" class="state-text-v2" checktype="c1" name="Address1_Region" placeholder=""
+                            autocomplete="off" id="Region">
                         </div>
-                        
+
                       </div>
                       <div class="main-f">
                         <div class="col1">
@@ -870,13 +886,13 @@
                       </p>
                     </label>
                     <input type="file" name="FileUpload3" id="fileInput2" hidden />
-                
+
                     <div id="filePreview2" class="file-preview">
                       <i class="fa-solid fa-file"></i>
                       <p id="fileText2"></p>
                       <i class="fa-solid fa-trash remove-file" id="removeFile2"></i>
                     </div>
-                
+
                     <p id="FileUpload3_error" class="zf-errorMessage" style="display: none">
                     </p>
                   </div>
@@ -964,13 +980,13 @@
                       </p>
                     </label>
                     <input type="file" name="FileUpload2" id="fileInput1" hidden />
-                
+
                     <div id="filePreview1" class="file-preview">
                       <i class="fa-solid fa-file"></i>
                       <p id="fileText1"></p>
                       <i class="fa-solid fa-trash remove-file" id="removeFile1"></i>
                     </div>
-                
+
                     <p id="FileUpload2_error" class="zf-errorMessage" style="display: none">
                     </p>
                   </div>
@@ -1083,7 +1099,7 @@
       document.getElementById("expirationDate1").setAttribute("min", tomorrow);
     });
   </script>
-   <script src="js/countries-states.js"></script>
+  <script src="js/countries-states.js"></script>
   <script>
     document
       .getElementById("expirationDate")
@@ -1194,11 +1210,11 @@
       });
     }
     var input = document.querySelector("#international_PhoneNumber_countrycode");
-		input.addEventListener("input", function () {
-			if (!input.value.startsWith("+")) {
-				input.value = "+" + input.value.replace(/[^0-9]/g, '');
-			}
-		});
+    input.addEventListener("input", function () {
+      if (!input.value.startsWith("+")) {
+        input.value = "+" + input.value.replace(/[^0-9]/g, '');
+      }
+    });
     function getAddressDetail(e, thisObj) {
       let id = thisObj.id;
       const query = `https://api.addressy.com/Capture/Interactive/Retrieve/v1.2/json3.ws?Key=TY78-BD75-NW81-XE97&Id=${id}`;
@@ -1285,11 +1301,11 @@
       });
     }
     var inputbill = document.querySelector("#international_PhoneNumber1_countrycode");
-		inputbill.addEventListener("input", function () {
-			if (!inputbill.value.startsWith("+")) {
-				inputbill.value = "+" + inputbill.value.replace(/[^0-9]/g, '');
-			}
-		});
+    inputbill.addEventListener("input", function () {
+      if (!inputbill.value.startsWith("+")) {
+        inputbill.value = "+" + inputbill.value.replace(/[^0-9]/g, '');
+      }
+    });
     function getAddressDetailSameAsBilling(e, thisObj) {
       let id = thisObj.id;
       const query = `https://api.addressy.com/Capture/Interactive/Retrieve/v1.2/json3.ws?Key=TY78-BD75-NW81-XE97&Id=${id}`;
@@ -1309,72 +1325,72 @@
 
 
     var input1 = document.querySelector("#international_PhoneNumber_countrycode");
-  var input2 = document.querySelector("#international_PhoneNumber1_countrycode");
+    var input2 = document.querySelector("#international_PhoneNumber1_countrycode");
 
-  var iti1 = window.intlTelInput(input1, {
-    separateDialCode: false,
-    preferredCountries: ["US"],
-    allowDropdown: true,
-    hiddenInput: "full",
-    utilsScript: "//cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js",
-    onlyCountries: [
-      "AX", "AS", "AD", "AI", "AR", "AM", "AW", "AT", "BS", "BH", "BD", "BB",
-      "BE", "BZ", "BM", "BO", "BA", "BR", "IO", "VG", "BG", "KH", "CA", "KY",
-      "CL", "CN", "CX", "CC", "CO", "CK", "CR", "HR", "CY", "CZ", "DK", "DM",
-      "DO", "EC", "SV", "EE", "FK", "FO", "FJ", "FI", "GE", "DE", "GI", "GR",
-      "GL", "GD", "GP", "GU", "GT", "GG", "HM", "HN", "HK", "HU", "IS", "IN",
-      "ID", "IQ", "IE", "IM", "IT", "JM", "JP", "JE", "JO", "KZ", "KI", "KW",
-      "KG", "LV", "LB", "LI", "LT", "LU", "MO", "MY", "MV", "MT", "MH", "MQ",
-      "YT", "MX", "FM", "MD", "MC", "MN", "ME", "MS", "NR", "NP", "NL", "NC",
-      "NI", "NU", "NF", "MK", "MP", "NO", "OM", "PW", "PA", "PG", "PY", "PE",
-      "PH", "PN", "PL", "PT", "QA", "SM", "SA", "RS", "SG", "SK", "SI", "SB",
-      "ZA", "GS", "KR", "ES", "LK", "BL", "SH", "KN", "LC", "MF", "PM", "VC",
-      "SJ", "SE", "CH", "TW", "TJ", "TH", "TO", "TT", "TR", "TC", "UM", "VI",
-      "UA", "AE", "GB", "US", "UY", "UZ", "VA", "VE", "VN", "WF", "EH"
-    ],
-  });
+    var iti1 = window.intlTelInput(input1, {
+      separateDialCode: false,
+      preferredCountries: ["US"],
+      allowDropdown: true,
+      hiddenInput: "full",
+      utilsScript: "//cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js",
+      onlyCountries: [
+        "AX", "AS", "AD", "AI", "AR", "AM", "AW", "AT", "BS", "BH", "BD", "BB",
+        "BE", "BZ", "BM", "BO", "BA", "BR", "IO", "VG", "BG", "KH", "CA", "KY",
+        "CL", "CN", "CX", "CC", "CO", "CK", "CR", "HR", "CY", "CZ", "DK", "DM",
+        "DO", "EC", "SV", "EE", "FK", "FO", "FJ", "FI", "GE", "DE", "GI", "GR",
+        "GL", "GD", "GP", "GU", "GT", "GG", "HM", "HN", "HK", "HU", "IS", "IN",
+        "ID", "IQ", "IE", "IM", "IT", "JM", "JP", "JE", "JO", "KZ", "KI", "KW",
+        "KG", "LV", "LB", "LI", "LT", "LU", "MO", "MY", "MV", "MT", "MH", "MQ",
+        "YT", "MX", "FM", "MD", "MC", "MN", "ME", "MS", "NR", "NP", "NL", "NC",
+        "NI", "NU", "NF", "MK", "MP", "NO", "OM", "PW", "PA", "PG", "PY", "PE",
+        "PH", "PN", "PL", "PT", "QA", "SM", "SA", "RS", "SG", "SK", "SI", "SB",
+        "ZA", "GS", "KR", "ES", "LK", "BL", "SH", "KN", "LC", "MF", "PM", "VC",
+        "SJ", "SE", "CH", "TW", "TJ", "TH", "TO", "TT", "TR", "TC", "UM", "VI",
+        "UA", "AE", "GB", "US", "UY", "UZ", "VA", "VE", "VN", "WF", "EH"
+      ],
+    });
 
-  var iti2 = window.intlTelInput(input2, {
-    separateDialCode: false,
-    preferredCountries: ["US"],
-    allowDropdown: true,
-    hiddenInput: "full",
-    utilsScript: "//cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js",
-    onlyCountries: [
-      "AX", "AS", "AD", "AI", "AR", "AM", "AW", "AT", "BS", "BH", "BD", "BB",
-      "BE", "BZ", "BM", "BO", "BA", "BR", "IO", "VG", "BG", "KH", "CA", "KY",
-      "CL", "CN", "CX", "CC", "CO", "CK", "CR", "HR", "CY", "CZ", "DK", "DM",
-      "DO", "EC", "SV", "EE", "FK", "FO", "FJ", "FI", "GE", "DE", "GI", "GR",
-      "GL", "GD", "GP", "GU", "GT", "GG", "HM", "HN", "HK", "HU", "IS", "IN",
-      "ID", "IQ", "IE", "IM", "IT", "JM", "JP", "JE", "JO", "KZ", "KI", "KW",
-      "KG", "LV", "LB", "LI", "LT", "LU", "MO", "MY", "MV", "MT", "MH", "MQ",
-      "YT", "MX", "FM", "MD", "MC", "MN", "ME", "MS", "NR", "NP", "NL", "NC",
-      "NI", "NU", "NF", "MK", "MP", "NO", "OM", "PW", "PA", "PG", "PY", "PE",
-      "PH", "PN", "PL", "PT", "QA", "SM", "SA", "RS", "SG", "SK", "SI", "SB",
-      "ZA", "GS", "KR", "ES", "LK", "BL", "SH", "KN", "LC", "MF", "PM", "VC",
-      "SJ", "SE", "CH", "TW", "TJ", "TH", "TO", "TT", "TR", "TC", "UM", "VI",
-      "UA", "AE", "GB", "US", "UY", "UZ", "VA", "VE", "VN", "WF", "EH"
-    ],
-  });
+    var iti2 = window.intlTelInput(input2, {
+      separateDialCode: false,
+      preferredCountries: ["US"],
+      allowDropdown: true,
+      hiddenInput: "full",
+      utilsScript: "//cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js",
+      onlyCountries: [
+        "AX", "AS", "AD", "AI", "AR", "AM", "AW", "AT", "BS", "BH", "BD", "BB",
+        "BE", "BZ", "BM", "BO", "BA", "BR", "IO", "VG", "BG", "KH", "CA", "KY",
+        "CL", "CN", "CX", "CC", "CO", "CK", "CR", "HR", "CY", "CZ", "DK", "DM",
+        "DO", "EC", "SV", "EE", "FK", "FO", "FJ", "FI", "GE", "DE", "GI", "GR",
+        "GL", "GD", "GP", "GU", "GT", "GG", "HM", "HN", "HK", "HU", "IS", "IN",
+        "ID", "IQ", "IE", "IM", "IT", "JM", "JP", "JE", "JO", "KZ", "KI", "KW",
+        "KG", "LV", "LB", "LI", "LT", "LU", "MO", "MY", "MV", "MT", "MH", "MQ",
+        "YT", "MX", "FM", "MD", "MC", "MN", "ME", "MS", "NR", "NP", "NL", "NC",
+        "NI", "NU", "NF", "MK", "MP", "NO", "OM", "PW", "PA", "PG", "PY", "PE",
+        "PH", "PN", "PL", "PT", "QA", "SM", "SA", "RS", "SG", "SK", "SI", "SB",
+        "ZA", "GS", "KR", "ES", "LK", "BL", "SH", "KN", "LC", "MF", "PM", "VC",
+        "SJ", "SE", "CH", "TW", "TJ", "TH", "TO", "TT", "TR", "TC", "UM", "VI",
+        "UA", "AE", "GB", "US", "UY", "UZ", "VA", "VE", "VN", "WF", "EH"
+      ],
+    });
 
-  function setInitialPhoneNumber(input, itiInstance) {
-    var countryData = itiInstance.getSelectedCountryData();
-    input.value = `+${countryData.dialCode} `;
-  }
+    function setInitialPhoneNumber(input, itiInstance) {
+      var countryData = itiInstance.getSelectedCountryData();
+      input.value = `+${countryData.dialCode} `;
+    }
 
-  setTimeout(function () {
-    setInitialPhoneNumber(input1, iti1);
-    setInitialPhoneNumber(input2, iti2);
-  }, 100);
+    setTimeout(function () {
+      setInitialPhoneNumber(input1, iti1);
+      setInitialPhoneNumber(input2, iti2);
+    }, 100);
 
 
-  input1.addEventListener("countrychange", function () {
-    setInitialPhoneNumber(input1, iti1);
-  });
+    input1.addEventListener("countrychange", function () {
+      setInitialPhoneNumber(input1, iti1);
+    });
 
-  input2.addEventListener("countrychange", function () {
-    setInitialPhoneNumber(input2, iti2);
-  });
+    input2.addEventListener("countrychange", function () {
+      setInitialPhoneNumber(input2, iti2);
+    });
 
     document.querySelector("#international_PhoneNumber_countrycode").addEventListener("countrychange", function () {
       var countySel = document.querySelector(".dropdown-countries");
@@ -1388,16 +1404,16 @@
     });
     document.addEventListener("keydown", function (event) {
       if (event.key === "Enter") {
-        event.preventDefault(); 
+        event.preventDefault();
         zf_ValidateAndSubmit();
       }
     });
   </script>
   <script>
-  function setInitialPhoneNumber(input, itiInstance) {
-    var countryData = itiInstance.getSelectedCountryData();
-    input.value = `+${countryData.dialCode} `;
-  }
+    function setInitialPhoneNumber(input, itiInstance) {
+      var countryData = itiInstance.getSelectedCountryData();
+      input.value = `+${countryData.dialCode} `;
+    }
   </script>
   <!-- file upload -->
   <script>
@@ -1408,26 +1424,26 @@
       let removeFile = document.getElementById(removeId);
       let dropzone = document.getElementById(dropzoneId);
       let errorMessage = document.getElementById(errorId);
-  
+
       fileInput.addEventListener("change", function () {
         if (this.files.length > 0) {
           fileText.textContent = this.files[0].name;
-          filePreview.style.display = "flex";  
-          dropzone.style.display = "none";  
-          errorMessage.style.display = "none";  
+          filePreview.style.display = "flex";
+          dropzone.style.display = "none";
+          errorMessage.style.display = "none";
         }
       });
-  
+
       removeFile.addEventListener("click", function () {
-        fileInput.value = "";  
+        fileInput.value = "";
         fileText.textContent = "";
-        filePreview.style.display = "none";  
-        dropzone.style.display = "block";  
-        errorMessage.style.display = "block";  
+        filePreview.style.display = "none";
+        dropzone.style.display = "block";
+        errorMessage.style.display = "block";
       });
     }
-  
-   
+
+
     setupFileUpload("fileInput1", "filePreview1", "fileText1", "removeFile1", "dropzoneContainer1", "FileUpload2_error");
     setupFileUpload("fileInput2", "filePreview2", "fileText2", "removeFile2", "dropzoneContainer2", "FileUpload3_error");
   </script>
@@ -1444,77 +1460,77 @@
       input.addEventListener("input", function () {
         const loqateDropdown = document.querySelector(".dropdown-list");
         if (loqateDropdown) {
-          loqateDropdown.style.display = "block"; 
+          loqateDropdown.style.display = "block";
         }
       });
     });
   </script>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const input = document.getElementById("searchAddress2");
-        document.addEventListener("click", function (event) {
-          const loqateDropdown = document.querySelector(".dropdown-list-SameASBilling");
-          if (!input.contains(event.target) && loqateDropdown && !loqateDropdown.contains(event.target)) {
-            loqateDropdown.style.display = "none";
-          }
-        });
-        input.addEventListener("input", function () {
-          const loqateDropdown = document.querySelector(".dropdown-list-SameASBilling");
-          if (loqateDropdown) {
-            loqateDropdown.style.display = "block"; 
-          }
-        });
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const input = document.getElementById("searchAddress2");
+      document.addEventListener("click", function (event) {
+        const loqateDropdown = document.querySelector(".dropdown-list-SameASBilling");
+        if (!input.contains(event.target) && loqateDropdown && !loqateDropdown.contains(event.target)) {
+          loqateDropdown.style.display = "none";
+        }
       });
-    </script>
-     <!-- Dynamic Height for Ifram -->
-<script>
-  function updateHeight() {
+      input.addEventListener("input", function () {
+        const loqateDropdown = document.querySelector(".dropdown-list-SameASBilling");
+        if (loqateDropdown) {
+          loqateDropdown.style.display = "block";
+        }
+      });
+    });
+  </script>
+  <!-- Dynamic Height for Ifram -->
+  <script>
+    function updateHeight() {
       requestAnimationFrame(() => {
-          let formContainer = document.querySelector("#form");
-          if (formContainer) {
-              formContainer.style.display = "block"; 
-              void formContainer.offsetHeight; 
+        let formContainer = document.querySelector("#form");
+        if (formContainer) {
+          formContainer.style.display = "block";
+          void formContainer.offsetHeight;
 
-              let newHeight = formContainer.scrollHeight + 20;
-              window.parent.postMessage(newHeight, '*');
-              setTimeout(() => {
-                  document.body.style.overflow = "";
-              }, 300);
-          }
+          let newHeight = formContainer.scrollHeight + 20;
+          window.parent.postMessage(newHeight, '*');
+          setTimeout(() => {
+            document.body.style.overflow = "";
+          }, 300);
+        }
       });
-  }
-  document.addEventListener("DOMContentLoaded", function () {
+    }
+    document.addEventListener("DOMContentLoaded", function () {
       setTimeout(updateHeight, 100);
-  });
-  document.addEventListener("click", function(event) {
+    });
+    document.addEventListener("click", function (event) {
       if (event.target.matches(".next, .previous, .same")) {
-          setTimeout(updateHeight, 50);
+        setTimeout(updateHeight, 50);
       }
-  });
-  window.addEventListener("resize", updateHeight);
-  const observer = new MutationObserver(() => {
+    });
+    window.addEventListener("resize", updateHeight);
+    const observer = new MutationObserver(() => {
       updateHeight();
-  });
+    });
 
-  observer.observe(document.querySelector("#form"), { childList: true, subtree: true });
-</script>
+    observer.observe(document.querySelector("#form"), { childList: true, subtree: true });
+  </script>
 
   <!-- send event for Magento -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       var submitButton = document.getElementById("submitBtn");
       var checkbox = document.getElementById("DecisionBox1");
-  
+
       submitButton.addEventListener("click", function () {
         console.log("Submit button clicked!");
-  
+
         // Store checkbox state in sessionStorage
         if (checkbox.checked) {
           sessionStorage.setItem("checkboxChecked", "true");
         } else {
           sessionStorage.setItem("checkboxChecked", "false");
         }
-  
+
         console.log("Stored checkbox value:", sessionStorage.getItem("checkboxChecked"));
       });
     });
