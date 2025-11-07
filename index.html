@@ -84,6 +84,19 @@
               </li>
               <!---------Section Ends Here---------->
               <!---------Name Starts Here---------->
+              <div style="display: none;" class="zf-tempFrmWrapper  zf-small "><label class="zf-labelName">
+                                Lead Source
+                            </label>
+                            <div class="zf-tempContDiv">
+                                <select class="zf-form-sBox" name="Dropdown9" checktype="c1">
+                                    <option selected="true" value="-Select-">-Select-</option>
+                                    <option value="Web Form">Web Form</option>
+                                    <option value="Direct">Direct</option>
+                                </select>
+                                <p id="Dropdown9_error" class="zf-errorMessage" style="display:none;">Invalid value</p>
+                            </div>
+                            <div class="zf-clearBoth"></div>
+                        </div>
               <li class="zf-tempFrmWrapper">
                 <div class="zf-tempContDiv zf-twoType">
                   <div class="zf-nameWrapper">
@@ -1535,6 +1548,32 @@
       });
     });
   </script>
+  <script>
+  (function() {
+    function getParameterByName(name) {
+      name = name.replace(/[\[\]]/g, '\\$&');
+      var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+          results = regex.exec(window.location.href);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+
+    window.onload = function() {
+      var sourceParam = getParameterByName('source');
+      var leadSourceDropdown = document.querySelector('select[name="Dropdown9"]');
+      if (leadSourceDropdown) {
+        if (sourceParam && sourceParam.toLowerCase() === 'web') {
+          leadSourceDropdown.value = 'Web Form';
+        } else {
+          leadSourceDropdown.value = 'Direct';
+        }
+       
+        leadSourceDropdown.style.display = 'none';
+      }
+    };
+  })();
+</script>
 </body>
 
 </html>
