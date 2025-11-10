@@ -1089,7 +1089,6 @@
       "SingleLine4",
       "Date1",
       "FileUpload2",
-      "Dropdown9",
     ];
     var isSalesIQIntegrationEnabled = false;
     var salesIQFieldsArray = [];
@@ -1549,32 +1548,7 @@
       });
     });
   </script>
-  <script>
-  (function() {
-    function getParameterByName(name) {
-      name = name.replace(/[\[\]]/g, '\\$&');
-      var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-          results = regex.exec(window.location.href);
-      if (!results) return null;
-      if (!results[2]) return '';
-      return decodeURIComponent(results[2].replace(/\+/g, ' '));
-    }
-
-    window.onload = function() {
-      var sourceParam = getParameterByName('source');
-      var leadSourceDropdown = document.querySelector('select[name="Dropdown9"]');
-      if (leadSourceDropdown) {
-        if (sourceParam && sourceParam.toLowerCase() === 'web') {
-          leadSourceDropdown.value = 'Web Form';
-        } else {
-          leadSourceDropdown.value = 'Direct';
-        }
-       
-        leadSourceDropdown.style.display = 'none';
-      }
-    };
-  })();
-</script>
+ 
 </body>
 
 </html>
