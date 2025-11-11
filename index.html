@@ -1548,7 +1548,29 @@
       });
     });
   </script>
- 
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    setTimeout(function() {
+      
+      var params = new URLSearchParams(window.location.search);
+      var sourceParam = params.get('source');
+      
+      var leadSourceDropdown = document.querySelector('select[name="Dropdown9"]');
+      if (leadSourceDropdown) {
+        
+        if (sourceParam && sourceParam.toLowerCase() === 'web') {
+          leadSourceDropdown.value = 'Web Form';
+        } else {
+          leadSourceDropdown.value = 'Direct';
+        }
+        
+      }
+    }, 100); 
+  });
+</script>
+
+
 </body>
 
 </html>
