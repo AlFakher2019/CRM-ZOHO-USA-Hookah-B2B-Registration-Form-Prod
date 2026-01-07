@@ -1154,75 +1154,97 @@
     }
 
     // Function to handle the search input
-    function searchDropdown() {
-      var country = $(".dropdown-countries").find(":selected").text();
-      var country_val = $("#countryF1").find(":selected").val();
-      if (country_val == "USA") {
-        var city = $(".Address_City").val();
-        var zipCode = $(".Address_ZipCode").val();
-        var inputLength = $("#searchInput").val().length;
-        if (inputLength > 0) {
-          const query = `https://api.addressy.com/Capture/Interactive/Find/v1.10/json3.ws?Key=TY78-BD75-NW81-XE97&Countries=US&Limit=20&Text=${$(
-            "#searchInput"
-          ).val()}`;
+   function searchDropdown() {
+  var country = $(".dropdown-countries").find(":selected").text();
+  var country_val = $("#countryF1").find(":selected").val();
+  
+  // Map country codes to API format
+  var countryMap = {
+    "USA": "US",
+    "CAN": "CA",
+    "MEX": "MX"
+  };
+  
+  var apiCountryCode = countryMap[country_val];
+  
+  if (apiCountryCode) {
+    var inputLength = $("#searchInput").val().length;
+    if (inputLength > 0) {
+      const query = `https://api.addressy.com/Capture/Interactive/Find/v1.10/json3.ws?Key=TY78-BD75-NW81-XE97&Countries=${apiCountryCode}&Limit=20&Text=${encodeURIComponent($("#searchInput").val())}`;
 
-          // Call the API to get data based on the search query
-          fetchData(query, (data) => {
-            const filteredOptions = data.Items;
-            dropdownList.empty();
-            filteredOptions.forEach((option) => {
-              if (option.Type === "Container" || option.Type === "Street" || option.Type === "Locality" || option.Type === "BuildingNumber") {
-                dropdownList.append(
-                  `<div class="dropdown-item"> ${option.Text} <span id="${option.Id}" onclick="callback(event, this);">see all ${option.Description}</span></div>`
-                );
-              } else {
-                dropdownList.append(
-                  `<div class="dropdown-item" id="${option.Id}" onclick="getAddressDetail(event, this);"> ${option.Text}</div>`
-                );
-              }
-            });
-          });
-        } else {
-          dropdownList.empty();
-        }
-      } else {
-        dropdownList.empty();
-      }
-    }
-
-    function callback(e, thisObj) {
-      let id = thisObj.id;
-      const query = `https://api.addressy.com/Capture/Interactive/Find/v1.10/json3.ws?Key=TY78-BD75-NW81-XE97&Countries=US&Limit=20&Container=${id}`;
       fetchData(query, (data) => {
+        if (!data || !data.Items || data.Items.length === 0) {
+          dropdownList.empty();
+          return;
+        }
         const filteredOptions = data.Items;
         dropdownList.empty();
-        dropdownList.css({ "max-height": "300px", "overflow-y": "auto" });
-
         filteredOptions.forEach((option) => {
-          if (option.Type === "Container") {
+          if (option.Type === "Container" || option.Type === "Street" || option.Type === "Locality" || option.Type === "BuildingNumber") {
             dropdownList.append(
-              `<div class="dropdown-item"> ${option.Text} <span id="${option.Id}" onclick="callback(event, this);">see all ${option.Description}</span></div>`
-            );
-          } else if (option.Type === "Street") {
-            dropdownList.append(
-              `<div class="dropdown-item" id="Street, ${option.Text}" onclick="getAddressDetail(event, this);"> ${option.Text}  <span id="${option.Id}" onclick="callback(event, this);">see all ${option.Description}</span></div></div>`
-            );
-          } else if (option.Type === "Locality") {
-            dropdownList.append(
-              `<div class="dropdown-item" id="Locality, ${option.Text}" onclick="getAddressDetail(event, this);"> ${option.Text}  <span id="${option.Id}" onclick="callback(event, this);">see all ${option.Description}</span></div></div>`
-            );
-          } else if (option.Type === "BuildingNumber") {
-            dropdownList.append(
-              `<div class="dropdown-item" id="BuildingNumber, ${option.Text}" onclick="getAddressDetail(event, this);"> ${option.Text}  <span id="${option.Id}" onclick="callback(event, this);">see all ${option.Description}</span></div></div>`
+              `<div class="dropdown-item"> ${option.Text} ${option.Description.includes("-") ? option.Description.substring(0, option.Description.lastIndexOf(" - ")) : option.Description} <span id="${option.Id}" onclick="callback(event, this);">see all ${option.Description}</span></div>`
             );
           } else {
             dropdownList.append(
-              `<div class="dropdown-item" id="${option.Id}" onclick="getAddressDetail(event, this);"> ${option.Text} </div>`
+              `<div class="dropdown-item" id="${option.Id}" onclick="getAddressDetail(event, this);"> ${option.Text} ${option.Description.includes("-") ? option.Description.substring(0, option.Description.lastIndexOf(" - ")) : option.Description}</div>`
             );
           }
         });
       });
+    } else {
+      dropdownList.empty();
     }
+  } else {
+    dropdownList.empty();
+  }
+}
+//////func
+    function callback(e, thisObj) {
+  let id = thisObj.id;
+  var country_val = $("#countryF1").val();
+  
+  var countryMap = {
+    "USA": "US",
+    "CAN": "CA",
+    "MEX": "MX"
+  };
+  
+  var apiCountryCode = countryMap[country_val] || "US";
+  
+  const query = `https://api.addressy.com/Capture/Interactive/Find/v1.10/json3.ws?Key=TY78-BD75-NW81-XE97&Countries=${apiCountryCode}&Limit=20&Container=${encodeURIComponent(id)}`;
+  fetchData(query, (data) => {
+    if (!data || !data.Items || data.Items.length === 0) {
+      return;
+    }
+    const filteredOptions = data.Items;
+    dropdownList.empty();
+    dropdownList.css({ "max-height": "300px", "overflow-y": "auto" });
+
+    filteredOptions.forEach((option) => {
+      if (option.Type === "Container") {
+        dropdownList.append(
+          `<div class="dropdown-item"> ${option.Text} ${option.Description.includes("-") ? option.Description.substring(0, option.Description.lastIndexOf(" - ")) : option.Description}<span id="${option.Id}" onclick="callback(event, this);">see all ${option.Description}</span></div>`
+        );
+      } else if (option.Type === "Street") {
+        dropdownList.append(
+          `<div class="dropdown-item" id="Street, ${option.Text}" onclick="getAddressDetail(event, this);"> ${option.Text} ${option.Description.includes("-") ? option.Description.substring(0, option.Description.lastIndexOf(" - ")) : option.Description} <span id="${option.Id}" onclick="callback(event, this);">see all ${option.Description}</span></div></div>`
+        );
+      } else if (option.Type === "Locality") {
+        dropdownList.append(
+          `<div class="dropdown-item" id="Locality, ${option.Text}" onclick="getAddressDetail(event, this);"> ${option.Text} ${option.Description.includes("-") ? option.Description.substring(0, option.Description.lastIndexOf(" - ")) : option.Description} <span id="${option.Id}" onclick="callback(event, this);">see all ${option.Description}</span></div></div>`
+        );
+      } else if (option.Type === "BuildingNumber") {
+        dropdownList.append(
+          `<div class="dropdown-item" id="BuildingNumber, ${option.Text}" onclick="getAddressDetail(event, this);"> ${option.Text} ${option.Description.includes("-") ? option.Description.substring(0, option.Description.lastIndexOf(" - ")) : option.Description}<span id="${option.Id}" onclick="callback(event, this);">see all ${option.Description}</span></div></div>`
+        );
+      } else {
+        dropdownList.append(
+          `<div class="dropdown-item" id="${option.Id}" onclick="getAddressDetail(event, this);"> ${option.Text} ${option.Description.includes("-") ? option.Description.substring(0, option.Description.lastIndexOf(" - ")) : option.Description}</div>`
+        );
+      }
+    });
+  });
+}
     var input = document.querySelector("#international_PhoneNumber_countrycode");
     input.addEventListener("input", function () {
       if (!input.value.startsWith("+")) {
@@ -1230,90 +1252,134 @@
       }
     });
     function getAddressDetail(e, thisObj) {
-      let id = thisObj.id;
-      const query = `https://api.addressy.com/Capture/Interactive/Retrieve/v1.2/json3.ws?Key=TY78-BD75-NW81-XE97&Id=${id}`;
-      fetchData(query, (data) => {
-        console.log(data)
-        const filteredOptions = data.Items;
-        filteredOptions.forEach((option) => {
-          $("#searchInput").val(option.Street)
-          $("#cityV1").val(option.City)
-          $("#stateLabel").val(option.ProvinceCode)
-          $(".state-dropdown").val(option.ProvinceCode).change();
-          $("#postalCode").val(option.PostalCode)
-          $("#suite_unit_apt_box_v1").val(option.SubBuilding)
-          dropdownList.empty();
-        });
-      });
-    }
+  let id = thisObj.id;
+  const query = `https://api.addressy.com/Capture/Interactive/Retrieve/v1.2/json3.ws?Key=TY78-BD75-NW81-XE97&Id=${encodeURIComponent(id)}`;
+  fetchData(query, (data) => {
+    console.log(data)
+    const filteredOptions = data.Items;
+    filteredOptions.forEach((option) => {
+      // Fill street, city, postal code, suite
+      $("#searchInput").val(option.Street)
+      $("#cityV1").val(option.City)
+      $("#postalCode").val(option.PostalCode)
+      $("#suite_unit_apt_box_v1").val(option.SubBuilding)
+      
+      // Get the selected country
+      var selectedCountry = $("#countryF1").val();
+      
+      // Handle state/province based on country
+      if (selectedCountry === "USA" || selectedCountry === "CAN") {
+        var provinceCode = option.ProvinceCode;
+        
+        // For Canada, add "CA-" prefix if not already present
+        if (selectedCountry === "CAN" && provinceCode && !provinceCode.startsWith("CA-")) {
+          provinceCode = "CA-" + provinceCode;
+        }
+        
+        // For USA and Canada: use dropdown
+        $(".state-dropdown").val(provinceCode).change();
+        $("#stateLabel").val(option.ProvinceCode);
+      } else if (selectedCountry === "MEX") {
+        // For Mexico: use text input and fill with province name
+        $(".state-text").val(option.ProvinceName || option.Province);
+        $("#stateLabel").val(option.ProvinceCode);
+      }
+      
+      dropdownList.empty();
+    });
+  });
+}
 
     const dropdownListSameAsBilling = $(".dropdown-list-SameASBilling");
-    function searchDropdownSameAsBilling() {
-      var country_val = $("#countryF2").find(":selected").val();
-      if (country_val == "USA") {
-        var inputLength = $("#searchAddress2").val().length;
-        if (inputLength > 0) {
-          const query = `https://api.addressy.com/Capture/Interactive/Find/v1.10/json3.ws?Key=TY78-BD75-NW81-XE97&Countries=US&Limit=20&Text=${$(
-            "#searchAddress2"
-          ).val()}`;
+   function searchDropdownSameAsBilling() {
+  var country_val = $("#countryF2").find(":selected").val();
+  
+  var countryMap = {
+    "USA": "US",
+    "CAN": "CA",
+    "MEX": "MX"
+  };
+  
+  var apiCountryCode = countryMap[country_val];
+  
+  if (apiCountryCode) {
+    var inputLength = $("#searchAddress2").val().length;
+    if (inputLength > 0) {
+      const query = `https://api.addressy.com/Capture/Interactive/Find/v1.10/json3.ws?Key=TY78-BD75-NW81-XE97&Countries=${apiCountryCode}&Limit=20&Text=${encodeURIComponent($("#searchAddress2").val())}`;
 
-          // Call the API to get data based on the search query
-          fetchData(query, (data) => {
-            const filteredOptions = data.Items;
-            dropdownListSameAsBilling.empty();
-            filteredOptions.forEach((option) => {
-              if (option.Type === "Container" || option.Type === "Street" || option.Type === "Locality" || option.Type === "BuildingNumber") {
-                dropdownListSameAsBilling.append(
-                  `<div class="dropdown-item-SameASBilling"> ${option.Text} <span id="${option.Id}" onclick="callbackSameAsBilling(event, this);">see all ${option.Description}</span></div>`
-                );
-              } else {
-                dropdownListSameAsBilling.append(
-                  `<div class="dropdown-item-SameASBilling" id="${option.Id}" onclick="getAddressDetailSameAsBilling(event, this);"> ${option.Text}</div>`
-                );
-              }
-            });
-          });
-        } else {
-          dropdownListSameAsBilling.empty();
-        }
-      } else {
-        dropdownListSameAsBilling.empty();
-      }
-    }
-
-    function callbackSameAsBilling(e, thisObj) {
-      let id = thisObj.id;
-      const query = `https://api.addressy.com/Capture/Interactive/Find/v1.10/json3.ws?Key=TY78-BD75-NW81-XE97&Countries=US&Limit=20&Container=${id}`;
       fetchData(query, (data) => {
+        if (!data || !data.Items || data.Items.length === 0) {
+          dropdownListSameAsBilling.empty();
+          return;
+        }
         const filteredOptions = data.Items;
         dropdownListSameAsBilling.empty();
-        dropdownListSameAsBilling.css({ "max-height": "300px", "overflow-y": "auto" });
-
         filteredOptions.forEach((option) => {
-          if (option.Type === "Container") {
+          if (option.Type === "Container" || option.Type === "Street" || option.Type === "Locality" || option.Type === "BuildingNumber") {
             dropdownListSameAsBilling.append(
-              `<div class="dropdown-item-SameASBilling"> ${option.Text} <span id="${option.Id}" onclick="callbackSameAsBilling(event, this);">see all ${option.Description}</span></div>`
-            );
-          } else if (option.Type === "Street") {
-            dropdownListSameAsBilling.append(
-              `<div class="dropdown-item-SameASBilling" id="Street, ${option.Text}" onclick="getAddressDetailSameAsBilling(event, this);"> ${option.Text}  <span id="${option.Id}" onclick="callbackSameAsBilling(event, this);">see all ${option.Description}</span></div></div>`
-            );
-          } else if (option.Type === "Locality") {
-            dropdownListSameAsBilling.append(
-              `<div class="dropdown-item-SameASBilling" id="Locality, ${option.Text}" onclick="getAddressDetailSameAsBilling(event, this);"> ${option.Text}  <span id="${option.Id}" onclick="callbackSameAsBilling(event, this);">see all ${option.Description}</span></div></div>`
-            );
-          } else if (option.Type === "BuildingNumber") {
-            dropdownListSameAsBilling.append(
-              `<div class="dropdown-item-SameASBilling" id="BuildingNumber, ${option.Text}" onclick="getAddressDetailSameAsBilling(event, this);"> ${option.Text}  <span id="${option.Id}" onclick="callbackSameAsBilling(event, this);">see all ${option.Description}</span></div></div>`
+              `<div class="dropdown-item-SameASBilling"> ${option.Text} ${option.Description.includes("-") ? option.Description.substring(0, option.Description.lastIndexOf(" - ")) : option.Description} <span id="${option.Id}" onclick="callbackSameAsBilling(event, this);">see all ${option.Description}</span></div>`
             );
           } else {
             dropdownListSameAsBilling.append(
-              `<div class="dropdown-item-SameASBilling" id="${option.Id}" onclick="getAddressDetailSameAsBilling(event, this);"> ${option.Text} </div>`
+              `<div class="dropdown-item-SameASBilling" id="${option.Id}" onclick="getAddressDetailSameAsBilling(event, this);"> ${option.Text} ${option.Description.includes("-") ? option.Description.substring(0, option.Description.lastIndexOf(" - ")) : option.Description}</div>`
             );
           }
         });
       });
+    } else {
+      dropdownListSameAsBilling.empty();
     }
+  } else {
+    dropdownListSameAsBilling.empty();
+  }
+}
+
+    function callbackSameAsBilling(e, thisObj) {
+  let id = thisObj.id;
+  var country_val = $("#countryF2").val();
+  
+  var countryMap = {
+    "USA": "US",
+    "CAN": "CA",
+    "MEX": "MX"
+  };
+  
+  var apiCountryCode = countryMap[country_val] || "US";
+  
+  const query = `https://api.addressy.com/Capture/Interactive/Find/v1.10/json3.ws?Key=TY78-BD75-NW81-XE97&Countries=${apiCountryCode}&Limit=20&Container=${encodeURIComponent(id)}`;
+  fetchData(query, (data) => {
+    if (!data || !data.Items || data.Items.length === 0) {
+      return;
+    }
+    const filteredOptions = data.Items;
+    dropdownListSameAsBilling.empty();
+    dropdownListSameAsBilling.css({ "max-height": "300px", "overflow-y": "auto" });
+
+    filteredOptions.forEach((option) => {
+      if (option.Type === "Container") {
+        dropdownListSameAsBilling.append(
+          `<div class="dropdown-item-SameASBilling"> ${option.Text} ${option.Description.includes("-") ? option.Description.substring(0, option.Description.lastIndexOf(" - ")) : option.Description}<span id="${option.Id}" onclick="callbackSameAsBilling(event, this);">see all ${option.Description}</span></div>`
+        );
+      } else if (option.Type === "Street") {
+        dropdownListSameAsBilling.append(
+          `<div class="dropdown-item-SameASBilling" id="Street, ${option.Text}" onclick="getAddressDetailSameAsBilling(event, this);"> ${option.Text} ${option.Description.includes("-") ? option.Description.substring(0, option.Description.lastIndexOf(" - ")) : option.Description} <span id="${option.Id}" onclick="callbackSameAsBilling(event, this);">see all ${option.Description}</span></div></div>`
+        );
+      } else if (option.Type === "Locality") {
+        dropdownListSameAsBilling.append(
+          `<div class="dropdown-item-SameASBilling" id="Locality, ${option.Text}" onclick="getAddressDetailSameAsBilling(event, this);"> ${option.Text} ${option.Description.includes("-") ? option.Description.substring(0, option.Description.lastIndexOf(" - ")) : option.Description} <span id="${option.Id}" onclick="callbackSameAsBilling(event, this);">see all ${option.Description}</span></div></div>`
+        );
+      } else if (option.Type === "BuildingNumber") {
+        dropdownListSameAsBilling.append(
+          `<div class="dropdown-item-SameASBilling" id="BuildingNumber, ${option.Text}" onclick="getAddressDetailSameAsBilling(event, this);"> ${option.Text} ${option.Description.includes("-") ? option.Description.substring(0, option.Description.lastIndexOf(" - ")) : option.Description}<span id="${option.Id}" onclick="callbackSameAsBilling(event, this);">see all ${option.Description}</span></div></div>`
+        );
+      } else {
+        dropdownListSameAsBilling.append(
+          `<div class="dropdown-item-SameASBilling" id="${option.Id}" onclick="getAddressDetailSameAsBilling(event, this);"> ${option.Text} ${option.Description.includes("-") ? option.Description.substring(0, option.Description.lastIndexOf(" - ")) : option.Description}</div>`
+        );
+      }
+    });
+  });
+}
     var inputbill = document.querySelector("#international_PhoneNumber1_countrycode");
     inputbill.addEventListener("input", function () {
       if (!inputbill.value.startsWith("+")) {
@@ -1321,21 +1387,42 @@
       }
     });
     function getAddressDetailSameAsBilling(e, thisObj) {
-      let id = thisObj.id;
-      const query = `https://api.addressy.com/Capture/Interactive/Retrieve/v1.2/json3.ws?Key=TY78-BD75-NW81-XE97&Id=${id}`;
-      fetchData(query, (data) => {
-        const filteredOptions = data.Items;
-        filteredOptions.forEach((option) => {
-          $("#searchAddress2").val(option.Street)
-          $("#cityV2").val(option.City)
-          $("#stateLabelV2").val(option.ProvinceCode)
-          $(".state-dropdown-v2").val(option.ProvinceCode).change();
-          $("#postalCodeV2").val(option.PostalCode)
-          $("#suite_unit_apt_box_v2").val(option.SubBuilding)
-          dropdownListSameAsBilling.empty();
-        });
-      });
-    }
+  let id = thisObj.id;
+  const query = `https://api.addressy.com/Capture/Interactive/Retrieve/v1.2/json3.ws?Key=TY78-BD75-NW81-XE97&Id=${encodeURIComponent(id)}`;
+  fetchData(query, (data) => {
+    const filteredOptions = data.Items;
+    filteredOptions.forEach((option) => {
+      // Fill street, city, postal code, suite
+      $("#searchAddress2").val(option.Street)
+      $("#cityV2").val(option.City)
+      $("#postalCodeV2").val(option.PostalCode)
+      $("#suite_unit_apt_box_v2").val(option.SubBuilding)
+      
+      // Get the selected country
+      var selectedCountry = $("#countryF2").val();
+      
+      // Handle state/province based on country
+      if (selectedCountry === "USA" || selectedCountry === "CAN") {
+        var provinceCode = option.ProvinceCode;
+        
+        // For Canada, add "CA-" prefix if not already present
+        if (selectedCountry === "CAN" && provinceCode && !provinceCode.startsWith("CA-")) {
+          provinceCode = "CA-" + provinceCode;
+        }
+        
+        // For USA and Canada: use dropdown
+        $(".state-dropdown-v2").val(provinceCode).change();
+        $("#stateLabelV2").val(option.ProvinceCode);
+      } else if (selectedCountry === "MEX") {
+        // For Mexico: use text input and fill with province name
+        $(".state-text-v2").val(option.ProvinceName || option.Province);
+        $("#stateLabelV2").val(option.ProvinceCode);
+      }
+      
+      dropdownListSameAsBilling.empty();
+    });
+  });
+}
 
 
     var input1 = document.querySelector("#international_PhoneNumber_countrycode");
