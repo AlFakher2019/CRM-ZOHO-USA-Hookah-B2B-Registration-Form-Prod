@@ -1259,10 +1259,11 @@
     const filteredOptions = data.Items;
     filteredOptions.forEach((option) => {
       // Fill street, city, postal code, suite
-      $("#searchInput").val(option.Street || option.Line1)
-      $("#cityV1").val(option.City)
-      $("#postalCode").val(option.PostalCode)
-      $("#suite_unit_apt_box_v1").val(option.SubBuilding)
+      const streetLine1 = option.Line1 || [option.BuildingNumber, option.Street].filter(Boolean).join(' ').trim();
+      $("#searchInput").val(streetLine1)
+      if (option.City) $("#cityV1").val(option.City)
+      if (option.PostalCode) $("#postalCode").val(option.PostalCode)
+      $("#suite_unit_apt_box_v1").val(option.SubBuilding || option.SecondaryStreet || "")
       
       // Get the selected country
       var selectedCountry = $("#countryF1").val();
@@ -1393,10 +1394,11 @@
     const filteredOptions = data.Items;
     filteredOptions.forEach((option) => {
       // Fill street, city, postal code, suite
-      $("#searchAddress2").val(option.Street || option.Line1)
-      $("#cityV2").val(option.City)
-      $("#postalCodeV2").val(option.PostalCode)
-      $("#suite_unit_apt_box_v2").val(option.SubBuilding)
+      const streetLine1 = option.Line1 || [option.BuildingNumber, option.Street].filter(Boolean).join(' ').trim();
+      $("#searchAddress2").val(streetLine1)
+      if (option.City) $("#cityV2").val(option.City)
+      if (option.PostalCode) $("#postalCodeV2").val(option.PostalCode)
+      $("#suite_unit_apt_box_v2").val(option.SubBuilding || option.SecondaryStreet || "")
       
       // Get the selected country
       var selectedCountry = $("#countryF2").val();
