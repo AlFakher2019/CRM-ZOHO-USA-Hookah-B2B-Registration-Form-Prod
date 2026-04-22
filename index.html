@@ -26,9 +26,21 @@
       display: none;
     }
   </style>
+  <script>
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id=GTM-P8R9ZCJF'+dl;
+f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-P8R9ZCJF');
+</script>
 </head>
 
 <body class="zf-backgroundBg">
+  <noscript>
+<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P8R9ZCJF"
+height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
   <!-- Change or deletion of the name attributes in the input tag will lead to empty values on record submission-->
   <div class="zf-templateWidth">
     <form
@@ -1660,7 +1672,100 @@
 </script>
 
 
+<script>
+window.dataLayer = window.dataLayer || [];
 
+// Push form view event on page load
+window.dataLayer.push({
+  'event': 'zf_formview',
+  'zf_category': 'Zoho Forms',
+  'zf_action': 'Form View',
+  'zf_formname': 'Order Proposal Form AF B2B'
+});
+
+console.log("Zoho form view event pushed!");
+</script>
+
+<!-- Track each step view separately -->
+<script>
+(function () {
+  window.dataLayer = window.dataLayer || [];
+
+  var stepNames = {
+    1: 'General Info',
+    2: 'Addresses',
+    3: 'Licenses'
+  };
+
+  function pushStepView(stepNum) {
+    window.dataLayer.push({
+      'event': 'zf_stepview',
+      'zf_category': 'Zoho Forms',
+      'zf_action': 'Step ' + stepNum + ' View',
+      'zf_formname': 'Order Proposal Form AF B2B',
+      'zf_step': stepNum,
+      'zf_stepname': stepNames[stepNum] || ('Step ' + stepNum)
+    });
+    console.log('Zoho form step ' + stepNum + ' (' + stepNames[stepNum] + ') view pushed!');
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var progressbar = document.getElementById('progressbar');
+    if (!progressbar) return;
+
+    // Fire step 1 on initial page load (it is active by default)
+    pushStepView(1);
+
+    var lastStep = 1;
+    var observer = new MutationObserver(function (mutations) {
+      mutations.forEach(function (m) {
+        if (m.type !== 'attributes' || m.attributeName !== 'class') return;
+        var li = m.target;
+        if (li.classList.contains('active')) {
+          var step = parseInt(li.getAttribute('data-step'), 10);
+          if (step && step !== lastStep) {
+            lastStep = step;
+            pushStepView(step);
+          }
+        }
+      });
+    });
+
+    progressbar.querySelectorAll('li').forEach(function (li) {
+      observer.observe(li, { attributes: true, attributeFilter: ['class'] });
+    });
+  });
+})();
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+  var form = document.getElementById("form"); // using the actual id="form"
+  console.log("Zoho form submit event pushed 1!");
+
+  if (form) {
+    // Save Zoho's original handler
+    var originalOnSubmit = form.onsubmit;
+    console.log("Zoho form submit event pushed2!");
+
+    form.onsubmit = function (e) {
+      // Push to dataLayer FIRST
+      console.log("Zoho form submit event pushed! 3");
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        'event': 'zf_formsubmit',
+        'zf_category': 'Zoho Forms',
+        'zf_action': 'Submit Form',
+        'zf_formname': 'Order Proposal Form AF B2B'
+      });
+      console.log("Zoho form submit event pushed!4");
+
+      // Then submit the form
+      form.submit();
+    };
+  }
+});
+</script>
 </body>
 
 </html>
