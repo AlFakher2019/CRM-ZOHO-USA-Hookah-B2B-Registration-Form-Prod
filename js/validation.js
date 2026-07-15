@@ -1,6 +1,48 @@
 var current = 1;
 var steps;
 
+// ---------------------------------------------------------------------------
+// GTM dataLayer tracking
+// ---------------------------------------------------------------------------
+window.dataLayer = window.dataLayer || [];
+
+var ZF_FORM_NAME = "Hookah B2B Registration Form";
+var ZF_STEP_NAMES = { 1: "General Info", 2: "Addresses", 3: "Licenses" };
+
+// Fired only once a step's fields are filled in and have passed validation.
+function zf_pushStepComplete(step) {
+  window.dataLayer.push({
+    event: "zf_step_complete",
+    zf_formname: ZF_FORM_NAME,
+    zf_step: step,
+    zf_stepname: ZF_STEP_NAMES[step] || "Step " + step,
+  });
+}
+
+var zf_submitted = false;
+
+// Native submit() intentionally bypasses the onsubmit handler: validation has
+// already run by the time we get here, and re-running it would submit twice.
+function zf_doSubmit() {
+  if (zf_submitted) {
+    return;
+  }
+  zf_submitted = true;
+  document.getElementById("form").submit();
+}
+
+// Give GTM a window to fire its tags before the browser navigates to Zoho,
+// but never let a slow or blocked container stop the form from submitting.
+function zf_pushLeadAndSend() {
+  window.dataLayer.push({
+    event: "generate_lead",
+    zf_formname: ZF_FORM_NAME,
+    eventCallback: zf_doSubmit,
+    eventTimeout: 2000,
+  });
+  setTimeout(zf_doSubmit, 2000);
+}
+
 $(document).ready(function () {
   var fieldsets = $("fieldset");
   steps = fieldsets.length;
@@ -72,6 +114,9 @@ $(document).ready(function () {
       }
     }
 
+    // Everything above passed, so this step is genuinely complete.
+    zf_pushStepComplete(current);
+
     $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
     // $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
 
@@ -123,14 +168,13 @@ $(document).ready(function () {
 
   $("#submitBtn").click(function (e) {
     e.preventDefault(); // Stop default submission first
-    console.log("Submit button clicked");
 
-    if (zf_ValidateAndSubmit()) {
-      console.log("Form validation passed, submitting...");
-      $("#form").unbind("submit").submit(); // Ensure form submits
-    } else {
-      console.log("Form validation failed.");
+    if (!zf_ValidateAndSubmit()) {
+      return;
     }
+
+    zf_pushStepComplete(current);
+    zf_pushLeadAndSend();
   });
 
   function setProgressBar(curStep) {
