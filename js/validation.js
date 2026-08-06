@@ -9,14 +9,37 @@ window.dataLayer = window.dataLayer || [];
 var ZF_FORM_NAME = "Hookah B2B Registration Form";
 var ZF_STEP_NAMES = { 1: "General Info", 2: "Addresses", 3: "Licenses" };
 
+function zf_notifyParentWindow(eventName, payload) {
+  try {
+    var message = {
+      type: "zf_form_event",
+      eventName: eventName,
+      payload: payload,
+    };
+
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage(message, "*");
+    }
+
+    if (window.top && window.top !== window) {
+      window.top.postMessage(message, "*");
+    }
+  } catch (error) {
+    console.warn("Unable to notify parent window for analytics event", error);
+  }
+}
+
 // Fired only once a step's fields are filled in and have passed validation.
 function zf_pushStepComplete(step) {
-  window.dataLayer.push({
+  var payload = {
     event: "zf_step_complete",
     zf_formname: ZF_FORM_NAME,
     zf_step: step,
     zf_stepname: ZF_STEP_NAMES[step] || "Step " + step,
-  });
+  };
+
+  window.dataLayer.push(payload);
+  zf_notifyParentWindow("zf_step_complete", payload);
 }
 
 var zf_submitted = false;
@@ -34,12 +57,15 @@ function zf_doSubmit() {
 // Give GTM a window to fire its tags before the browser navigates to Zoho,
 // but never let a slow or blocked container stop the form from submitting.
 function zf_pushLeadAndSend() {
-  window.dataLayer.push({
+  var payload = {
     event: "generate_lead",
     zf_formname: ZF_FORM_NAME,
     eventCallback: zf_doSubmit,
     eventTimeout: 2000,
-  });
+  };
+
+  window.dataLayer.push(payload);
+  zf_notifyParentWindow("generate_lead", payload);
   setTimeout(zf_doSubmit, 2000);
 }
 
@@ -78,11 +104,13 @@ $(document).ready(function () {
   $(".next").click(async function () {
     current_fs = $(this).closest("fieldset");
     next_fs = current_fs.next("fieldset");
+    let stepValidated = false;
+
     if (current === 1) {
       const isMandatoryFilled = zf_CheckMandatory();
       const isPhoneValid = await phoneNumberValidation();
       const isEmailValid = validateEmail($("#Email").val());
-      const isEmailexist = await validate_Email()
+      const isEmailexist = await validate_Email();
       const isPhoneFormatted = phoneFormat();
       if (
         !isMandatoryFilled ||
@@ -93,12 +121,13 @@ $(document).ready(function () {
       ) {
         return false;
       }
+      stepValidated = true;
     }
 
     if (current === 2) {
       const isMandatoryFilledv1 = zf_CheckMandatory1();
       const isMandatoryFilledv2 = zf_CheckMandatory2();
-      if (!isMandatoryFilledv1){
+      if (!isMandatoryFilledv1) {
         return false;
       }
 
@@ -109,12 +138,21 @@ $(document).ready(function () {
       //   return false;
       // }
 
-      if (!$("#DecisionBox3").is(":checked") && !isMandatoryFilledv2){
+      if (!$("#DecisionBox3").is(":checked") && !isMandatoryFilledv2) {
         return false;
       }
+      stepValidated = true;
     }
 
-    // Everything above passed, so this step is genuinely complete.
+    if (!stepValidated && current > 2) {
+      return false;
+    }
+
+    if (next_fs.length === 0) {
+      return false;
+    }
+
+    // Only fire after validation passes and the user is actually moving forward.
     zf_pushStepComplete(current);
 
     $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
