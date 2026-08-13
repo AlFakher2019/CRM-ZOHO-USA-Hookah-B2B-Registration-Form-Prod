@@ -1678,10 +1678,14 @@
 
 <script>
   window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({
+  var zf_formviewPayload = {
     event: 'zf_formview',
     zf_formname: 'Hookah B2B Registration Form'
-  });
+  };
+  window.dataLayer.push(zf_formviewPayload);
+  if (typeof zf_notifyParentWindow === 'function') {
+    zf_notifyParentWindow('zf_formview', zf_formviewPayload);
+  }
 </script>
 
 <!-- Step and submit tracking live in js/validation.js, next to the validation they depend on. -->

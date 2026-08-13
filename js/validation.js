@@ -11,15 +11,20 @@ var ZF_STEP_NAMES = { 1: "General Info", 2: "Addresses", 3: "Licenses" };
 
 function zf_notifyParentWindow(eventName, payload) {
   try {
+    // postMessage uses structured clone, which can't serialize functions
+    // (e.g. generate_lead's eventCallback) - strip them before sending.
+    var cloneablePayload = {};
+    for (var key in payload) {
+      if (typeof payload[key] !== "function") {
+        cloneablePayload[key] = payload[key];
+      }
+    }
+
     var message = {
       type: "zf_form_event",
       eventName: eventName,
-      payload: payload,
+      payload: cloneablePayload,
     };
-
-    if (window.parent && window.parent !== window) {
-      window.parent.postMessage(message, "*");
-    }
 
     if (window.top && window.top !== window) {
       window.top.postMessage(message, "*");
