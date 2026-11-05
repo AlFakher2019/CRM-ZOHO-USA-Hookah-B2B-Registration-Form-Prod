@@ -51,6 +51,22 @@
       action="https://forms.zohopublic.com/airglobal/form/HookahRegistrationRegistrationForm/formperma/UpBKU3rXW--ntkwesVrmDdv4mlfbgBInkNVK1A9jL24/htmlRecords/submit"
       name="form" method="POST" onSubmit='javascript:document.charset="UTF-8"; return zf_ValidateAndSubmit();'
       accept-charset="UTF-8" enctype="multipart/form-data" id="form">
+      
+    <!-- GA4 Tracking Fields -->
+      <input
+        type="hidden"
+        id="gaClientId"
+        name="SingleLine10"
+        value=""
+      >
+
+      <input
+        type="hidden"
+        id="gaSessionId"
+        name="SingleLine3"
+        value=""
+      >
+
       <input type="hidden" name="zf_referrer_name"
         value="" /><!-- To Track referrals , place the referrer name within the " " in the above hidden input field -->
       <input type="hidden" name="zf_redirect_url"
@@ -1686,6 +1702,63 @@
   if (typeof zf_notifyParentWindow === 'function') {
     zf_notifyParentWindow('zf_formview', zf_formviewPayload);
   }
+</script>
+
+<script>
+(function () {
+  // Replace with the exact websites embedding this form.
+  const ALLOWED_PARENT_ORIGINS = [
+    "https://business.hookah.com"
+  ];
+
+  function isAllowedOrigin(origin) {
+    return ALLOWED_PARENT_ORIGINS.includes(origin);
+  }
+
+  function setGaIds(clientId, sessionId) {
+    const clientField = document.getElementById("gaClientId");
+    const sessionField = document.getElementById("gaSessionId");
+
+    if (clientField) {
+      clientField.value =
+        typeof clientId === "string" ? clientId.trim() : "";
+    }
+
+    if (sessionField) {
+      sessionField.value =
+        sessionId == null ? "" : String(sessionId).trim();
+    }
+  }
+
+  window.addEventListener("message", function (event) {
+    if (!isAllowedOrigin(event.origin)) return;
+    if (event.source !== window.parent) return;
+    if (!event.data || event.data.type !== "GA4_IDENTIFIERS") return;
+
+    setGaIds(event.data.clientId, event.data.sessionId);
+
+    console.log("GA4 identifiers received", {
+      hasClientId: Boolean(event.data.clientId),
+      hasSessionId: Boolean(event.data.sessionId)
+    });
+  });
+
+  function requestGaIds() {
+    if (window.parent === window) return;
+
+    ALLOWED_PARENT_ORIGINS.forEach(function (origin) {
+      window.parent.postMessage({
+        type: "GA4_READY"
+      }, origin);
+    });
+  }
+
+  // Request once when the iframe loads.
+  requestGaIds();
+
+  // Request again on focus, useful for long forms.
+  window.addEventListener("focus", requestGaIds);
+})();
 </script>
 
 <!-- Step and submit tracking live in js/validation.js, next to the validation they depend on. -->
